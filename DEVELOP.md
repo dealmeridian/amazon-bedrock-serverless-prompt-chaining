@@ -31,7 +31,7 @@ The token only needs the `public_repo` scope.
 Copy the generated token, and create a Secrets Manager secret containing the token:
 ```
 aws secretsmanager create-secret \
-    --region us-west-2 \
+    --region us-east-1 \
     --name BedrockPromptChainGitHubToken \
     --description "For access to public repos for the Bedrock serverless prompt chain demos" \
     --secret-string "{\"token\": \"<your token>\"}"
@@ -47,14 +47,14 @@ cd cloud-print-utils
 make build/weasyprint-layer-python3.8.zip
 
 aws lambda publish-layer-version \
-    --region us-west-2 \
+    --region us-east-1 \
     --layer-name weasyprint \
     --zip-file fileb://build/weasyprint-layer-python3.8.zip \
     --compatible-runtimes "python3.8" \
     --license-info "MIT" \
     --description "fonts and libs required by weasyprint"
 
-aws ssm put-parameter --region us-west-2 \
+aws ssm put-parameter --region us-east-1 \
     --name WeasyprintLambdaLayer \
     --type String \
     --value <value of LayerVersionArn from above command's output>
@@ -68,7 +68,7 @@ cdk deploy --app 'python3 cdk_stacks.py' --all
 The demo application will be hosted at `https://bedrock-serverless-prompt-chaining.my-domain.com`,
 behind Cognito-based user authentication.
 To add users that can log into the demo application, select the `bedrock-serverless-prompt-chaining-demo` user pool on the
-[Cognito console](https://us-west-2.console.aws.amazon.com/cognito/v2/idp/user-pools?region=us-west-2)
+[Cognito console](https://us-east-1.console.aws.amazon.com/cognito/v2/idp/user-pools?region=us-east-1)
 and click "Create user".
 
 As part of deploying the demo application, an SNS topic `bedrock-serverless-prompt-chaining-notifications`
@@ -90,12 +90,12 @@ cdk deploy --app 'python3 pipeline_app.py'
 ```
 
 Activate the CodeStar Connections connection created by the pipeline stack.
-Go to the [CodeStar Connections console](https://console.aws.amazon.com/codesuite/settings/connections?region=us-west-2),
+Go to the [CodeStar Connections console](https://console.aws.amazon.com/codesuite/settings/connections?region=us-east-1),
 select the `bedrock-prompt-chain-repo` connection, and click "Update pending connection".
 Then follow the prompts to connect your GitHub account and repos to AWS.
 When finished, the `bedrock-prompt-chain-repo` connection should have the "Available" status.
 
-Go to the [pipeline's page in the CodePipeline console](https://us-west-2.console.aws.amazon.com/codesuite/codepipeline/pipelines/bedrock-serverless-prompt-chaining-demo/view?region=us-west-2),
+Go to the [pipeline's page in the CodePipeline console](https://us-east-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/bedrock-serverless-prompt-chaining-demo/view?region=us-east-1),
 and click "Release change" to restart the pipeline.
 
 As part of deploying the demo application, an SNS topic `bedrock-serverless-prompt-chaining-notifications`
