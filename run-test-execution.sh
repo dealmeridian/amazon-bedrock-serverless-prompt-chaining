@@ -11,23 +11,23 @@ EXECUTION_NAME=local-test-`uuidgen`
 
 echo "Starting execution $EXECUTION_NAME for state machine PromptChainDemo-$DEMO_NAME"
 aws stepfunctions start-execution \
-    --region us-west-2 \
+    --region us-east-1 \
     --name $EXECUTION_NAME \
-    --state-machine-arn arn:aws:states:us-west-2:$AWS_ACCOUNT_ID:stateMachine:PromptChainDemo-$DEMO_NAME \
+    --state-machine-arn arn:aws:states:us-east-1:$AWS_ACCOUNT_ID:stateMachine:PromptChainDemo-$DEMO_NAME \
     --input file://test-inputs/$DEMO_NAME.json
 
 echo -e "\nWatch the execution at:"
-echo "https://us-west-2.console.aws.amazon.com/states/home?region=us-west-2#/v2/executions/details/arn:aws:states:us-west-2:$AWS_ACCOUNT_ID:execution:PromptChainDemo-$DEMO_NAME:$EXECUTION_NAME"
+echo "https://us-east-1.console.aws.amazon.com/states/home?region=us-east-1#/v2/executions/details/arn:aws:states:us-east-1:$AWS_ACCOUNT_ID:execution:PromptChainDemo-$DEMO_NAME:$EXECUTION_NAME"
 
 echo -ne "\nWaiting for execution to complete..."
 while true; do
-    STATUS=`aws stepfunctions describe-execution --region us-west-2 --query status --output text --execution-arn arn:aws:states:us-west-2:$AWS_ACCOUNT_ID:execution:PromptChainDemo-$DEMO_NAME:$EXECUTION_NAME`
+    STATUS=`aws stepfunctions describe-execution --region us-east-1 --query status --output text --execution-arn arn:aws:states:us-east-1:$AWS_ACCOUNT_ID:execution:PromptChainDemo-$DEMO_NAME:$EXECUTION_NAME`
     if [ "$STATUS" = "SUCCEEDED" ] || [ "$STATUS" = "FAILED" ] || [ "$STATUS" = "TIMED_OUT" ] || [ "$STATUS" = "ABORTED" ]; then
         echo -e "\n\nExecution completed. Status is $STATUS"
         if [ "$STATUS" = "SUCCEEDED" ]; then
           echo "Output:"
           aws stepfunctions describe-execution \
-            --execution-arn arn:aws:states:us-west-2:$AWS_ACCOUNT_ID:execution:PromptChainDemo-$DEMO_NAME:$EXECUTION_NAME \
+            --execution-arn arn:aws:states:us-east-1:$AWS_ACCOUNT_ID:execution:PromptChainDemo-$DEMO_NAME:$EXECUTION_NAME \
             --query output \
             --output text | jq
           exit 0

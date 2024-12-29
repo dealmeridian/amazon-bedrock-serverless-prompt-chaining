@@ -9,7 +9,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - AWS_REGION=us-west-2
+      - AWS_REGION=us-east-1
     volumes:
       - type: bind
         source: ~/.aws

@@ -1,15 +1,26 @@
 from aws_cdk import (
     CfnOutput,
     Stack,
-    aws_codestarconnections as connections,
+)
+from aws_cdk import (
     aws_codebuild as codebuild,
+)
+from aws_cdk import (
     aws_codepipeline as codepipeline,
-    aws_codestarnotifications as notifications,
+)
+from aws_cdk import (
     aws_codepipeline_actions as actions,
+)
+from aws_cdk import (
+    aws_codestarconnections as connections,
+)
+from aws_cdk import (
+    aws_codestarnotifications as notifications,
+)
+from aws_cdk import (
     aws_iam as iam,
 )
 from constructs import Construct
-import os
 
 
 class PipelineStack(Stack):
@@ -58,7 +69,7 @@ class PipelineStack(Stack):
         source_output = codepipeline.Artifact("SourceArtifact")
         source_action = actions.CodeStarConnectionsSourceAction(
             action_name="GitHubSource",
-            owner="aws-samples",
+            owner="dealmeridian",
             repo="amazon-bedrock-serverless-prompt-chaining",
             branch="main",
             connection_arn=github_connection.attr_connection_arn,
